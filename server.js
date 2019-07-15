@@ -59,6 +59,22 @@ server.put('/accounts/:id', async (req, res, next) => {
     }
 })
 
+
+server.delete('/accounts/:id', async (req, res, next) => {
+    try {
+        const account = await db.deleteAccount(req.params.id);
+        if (account) {
+            res.status(201).json({
+                message: `Account with id ${req.params.id} has been deleted`,
+                account: account
+
+        })
+        }
+    } catch (error) {
+        next(new Error(error));
+    }
+})
+
 server.use(function errorHandler(err, req, res, next) {
     console.error('ERROR:', err);
     res.status(500).json({
